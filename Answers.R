@@ -9,7 +9,6 @@ library(tidyr)
 
 # Telco Customer Churn
 telco <- read.csv('data2.csv')
-telco <- read_excel("telco customer churn.xlsx")
 # Recode "Churn" variable for classification
 telco <- telco %>% 
   mutate(Churn = recode_factor(Churn, "No" = "No", "Yes" = "Yes"))
