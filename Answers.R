@@ -45,18 +45,15 @@ p2 <- telco %>%
   select(-customers) %>%
   spread(key = Contract, value = churn_yes_rate)
 
-# Question 2 part a
 ggplot(data = telco, aes(x = Contract, y = TenureMonths)) +
   geom_boxplot(aes(color = Churn)) +
   facet_grid(PaymentMethod ~ InternetService)
 
-# Question 2 part b
 
 ggplot(data = telco, aes(x = MonthlyCharges, y = TenureMonths)) +
   geom_point(aes(color = Churn)) +
   facet_wrap(~PaymentMethod )
 
-# Question 3 part a
 
 model <- glm(Churn ~ Contract + PaymentMethod + MonthlyCharges + TenureMonths, 
              family = binomial(link = 'logit'), data = telco )
@@ -77,7 +74,6 @@ customer_two_probability <-  predict(model, newdata = customer_two, type = 'resp
 customer_one_probability/customer_two_probability
 # %45 more likely to leave.
 
-# Question 3 part b
 
 logistic_subset <- telco %>%
   select(Contract, PaymentMethod, MonthlyCharges, TenureMonths)
@@ -87,7 +83,7 @@ churn_logistic <- predict(model, newdata = logistic_subset, type = 'response') %
 
 logistic_subset <- cbind(logistic_subset, churn_logistic)
 
-# Question 4
+
 model_b <- naiveBayes(Churn ~ Contract + PaymentMethod + MonthlyCharges + TenureMonths, 
                       data = telco )
 naive_subset <- telco %>%
@@ -98,7 +94,6 @@ churn_bayes <- cut(churn_bayes, c(0, 0.4, 1), labels = c('No', 'Yes'))
 
 naive_subset <- cbind(naive_subset, churn_bayes)
 
-# Question 5
 
 confusion_matrix_results(table(telco$Churn, churn_bayes), 'Yes')
 confusion_matrix_results(table(telco$Churn, churn_logistic), 'Yes')
